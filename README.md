@@ -18,6 +18,7 @@ Call it with the following arguments:
 3. The name of a "target" column
 4. Whether the color ramp should be inverted (default : False)
 5. A colormap (default : derived from target column)
+6. The number of categories to preserve in categorical data (default : 7)
 
 ```python
 # dat (pandas dataframe)
