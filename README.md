@@ -3,7 +3,7 @@
 This is a simplified [mosaic plot](https://en.wikipedia.org/wiki/Mosaic_plot)
 technique that works for numeric/categorical data.
 
-[Imgur](https://i.imgur.com/atssMvU.png)
+![Imgur](https://i.imgur.com/atssMvU.png)
 
 For categorical data, a frequency table of values is calculated.  Only the top 7
 most common categories are preserved.  The rest are replaced by "TOP_NA".
