@@ -6,7 +6,7 @@ technique that works for numeric/categorical data.
 ![Imgur](https://i.imgur.com/atssMvU.png)
 
 For categorical data, a frequency table of values is calculated.  Only the top 7
-most common categories are preserved.  The rest are replaced by "TOP_NA".
+most common categories are preserved.  The rest are replaced by "NA_TOPN".
 
 For numeric data, a histogram is calculated over the distribution. The precise
 numeric values are replaced by its respective bin.
