@@ -7,25 +7,25 @@ from statsmodels.graphics.mosaicplot import mosaic
 CAT_COLORMAP = plt.cm.get_cmap("Pastel2", 8)
 LIN_COLORMAP = plt.cm.get_cmap("RdYlGn", 8)
 
-def topn(dat, col, top=7):
+def top_cat(dat, col, top=7):
     top_labels = dat[col].value_counts().sort_values(ascending=False)[0:top].index
     topmod = dat[col].map(lambda label: "NA_TOPN" if label not in top_labels else label)
     return topmod
 
-def topbin(dat,col):
+def top_bin(dat,col,topn=7):
     if dat[col].dtype == "object":
-        return topn(dat, col).reset_index(drop=True)
+        return top_cat(dat, col, topn).reset_index(drop=True)
     _, bins = np.histogram(dat[col], bins=8)
     buckets = bins[np.digitize(dat[col], bins)-1].round(2).astype("str")
     col_label = col + " Bins"
     return pd.Series(data=buckets, name=col_label).reset_index(drop=True)
 
 
-def mosaiq(dat, feature, target, invert_colors=False, cmap= None):
+def mosaiq(dat, feature, target, invert_colors=False, cmap=None, topn=7):
     _, axs = plt.subplots(figsize=(16, 9))
     datsrt = dat.sort_values([target, feature], ascending=[True, True])
-    feat = topbin(datsrt, feature)
-    targ = topbin(datsrt, target)
+    feat = top_bin(datsrt, feature, topn)
+    targ = top_bin(datsrt, target, topn)
     datmos = pd.DataFrame({feature : feat, target : targ})
 
     def lab(var):
