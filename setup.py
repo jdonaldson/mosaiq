@@ -2,11 +2,11 @@ from setuptools import setup
 
 setup(
     name='mosaiq',
-    version='0.1-1',
-    scripts=['mosaiq.py'],
+    version='0.1-2',
     install_requires=['pandas', 'matplotlib'],
     license=['MIT'],
     url=['https://github.com/jdonaldson/mosaiq-python'],
     author=["Justin Donaldson"],
-    author_email=['jdonaldson@gmail.com']
+    packages=["mosaiq"],
+    author_email=['jdonaldson@gmail.com'],
 )
