@@ -15,7 +15,7 @@ def top_cat(dat, col, top=7):
 def top_bin(dat,col,topn=7):
     if dat[col].dtype == "object":
         return top_cat(dat, col, topn).reset_index(drop=True)
-    _, bins = np.histogram(dat[col], bins=8)
+    _, bins = np.histogram(dat[col][~np.isnan(dat[col])], bins=8)
     buckets = bins[np.digitize(dat[col], bins)-1].round(2).astype("str")
     col_label = col + " Bins"
     return pd.Series(data=buckets, name=col_label).reset_index(drop=True)
