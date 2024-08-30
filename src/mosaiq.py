@@ -21,7 +21,7 @@ def top_bin(dat,col,topn=7):
     return pd.Series(data=buckets, name=col_label).reset_index(drop=True)
 
 
-def mosaiq(dat, feature, target, invert_colors=False, cmap=None, topn=7):
+def mosaiq(dat, feature, target, invert_colors=False, cmap=None, topn=7, label_rotation=None):
     _, axs = plt.subplots(figsize=(16, 9))
     datsrt = dat.sort_values([target, feature], ascending=[True, True])
     feat = top_bin(datsrt, feature, topn)
@@ -54,5 +54,5 @@ def mosaiq(dat, feature, target, invert_colors=False, cmap=None, topn=7):
 
         return {"color" : adj_trans(colormap(color_dict[value]))}
 
-    mosaic(datmos, [feature, target], properties = props, labelizer=lab, title="%s vs. %s" % (feature, target),ax=axs)
+    mosaic(datmos, [feature, target], properties = props, labelizer=lab, title="%s vs. %s" % (feature, target),ax=axs, label_rotation=label_rotation)
 
