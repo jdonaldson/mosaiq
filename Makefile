@@ -68,7 +68,7 @@ preflight: test, build
 	docs
 
 test:
-	pytest --cov=python/src python/test
+	pytest --cov=src test
 
 # publish_docs: docs
 # 	quarto publish
