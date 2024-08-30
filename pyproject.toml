@@ -1,6 +1,9 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools >= 64.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [project]
 name = "mosaiq"
@@ -8,33 +11,30 @@ dynamic = ["version"]
 authors = [
     { name = "Justin Donaldson", email = "jjd@jjd.io" }
 ]
-description = "A project named mosaiq"
+description = "A generalized mosaic plotting function for categorical and numerical data."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.12"
 dependencies = [
   "pandas",
+  "build",
+  "idna",
   "matplotlib",
+  "bump-my-version",
   "statsmodels"
 ]
 urls = { "Homepage" = "https://github.com/jdonaldson/mosaiq-python" }
 
 [project.optional-dependencies]
 dev = [
-  "build",
-  "bump-my-version",
   "mosaiq[ci]"
 ]
 
 ci = [
   "pytest-cov",
-  "idna"
 ]
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
 [tool.bumpversion]
+
 current_version = "0.1.5"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
@@ -42,7 +42,7 @@ search = "{current_version}"
 replace = "{new_version}"
 regex = false
 ignore_missing_version = false
-tag = false
+tag = true
 sign_tags = false
 tag_name = "v{new_version}"
 tag_message = "Bump version: {current_version} → {new_version}"
@@ -51,7 +51,7 @@ commit = true
 message = "Bump version: {current_version} → {new_version}"
 commit_args = ""
 
-[pytest]
-addopts = "--cov=src"
-pythonpath = "src"
-testpaths = ["tests"]
+# [pytest]
+# addopts = "--cov=src"
+# pythonpath = "src"
+# testpaths = ["tests"]
