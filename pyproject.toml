@@ -7,7 +7,7 @@ where = ["src"]
 
 [project]
 name = "mosaiq"
-version="0.1.9"
+version="0.1.10"
 tag = false
 
 dynamic = ["version"]
@@ -38,7 +38,7 @@ ci = [
 ]
 
 [tool.bumpversion]
-current_version = "0.1.9"
+current_version = "0.1.10"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"
