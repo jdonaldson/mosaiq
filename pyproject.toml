@@ -7,6 +7,7 @@ where = ["src"]
 
 [project]
 name = "mosaiq"
+version="0.1.7"
 dynamic = ["version"]
 authors = [
     { name = "Justin Donaldson", email = "jjd@jjd.io" }
@@ -34,13 +35,11 @@ ci = [
   "pytest-cov",
 ]
 
-[tool.setuptools.dynamic]
-version = { attr = "setuptools_scm.get_version" }
+[tool.bumpversion]
+current_version = "0.1.7"
 
-[tool.setuptools_scm]
-version_scheme = "release-branch-semver"
-write_to = "src/mosaiq/_version.py"
-
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
 
 # [[tool.bumpversion.files]]
 # filename = "CHANGELOG.md"
