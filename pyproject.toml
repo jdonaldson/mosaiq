@@ -38,8 +38,8 @@ ci = [
 version = { attr = "setuptools_scm.get_version" }
 
 [tool.setuptools_scm]
+version_scheme = "release-branch-semver"
 write_to = "src/mosaiq/_version.py"
-
 
 
 # [[tool.bumpversion.files]]
