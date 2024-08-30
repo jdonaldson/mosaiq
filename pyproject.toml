@@ -29,7 +29,7 @@ dev = [
 where = ["src"]
 
 [tool.bumpversion]
-current_version = "0.1.4"
+current_version = "0.1.5"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"
