@@ -22,11 +22,13 @@ urls = { "Homepage" = "https://github.com/jdonaldson/mosaiq-python" }
 [project.optional-dependencies]
 dev = [
   "build",
-  "bump-my-version"
+  "bump-my-version",
+  "mosaiq[ci]"
 ]
 
 ci = [
-  "pytest-cov"
+  "pytest-cov",
+  "idna"
 ]
 
 [tool.setuptools.packages.find]
