@@ -1,0 +1,84 @@
+
+name: Build
+
+on: [push, pull_request, release]
+
+permissions:
+  contents: write
+  id-token: write
+  pages: write
+
+jobs:
+  test:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # os: [ubuntu-20.04, windows-2019, macOS-11]
+        os: [ubuntu-20.04]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.12'
+
+
+      - name : Install Requirements
+        run : |
+          pip install -r requirements.txt
+          pip install ".[ci]"
+
+      - name: Run Tests
+        run: make test
+
+      # - name: Build Docs [Main Branch Only]
+      #   if: github.ref == 'refs/heads/main'
+      #   run: |
+      #     pip install quartodoc
+      #     quartodoc build
+
+      # - name: Set up Quarto [Main Branch Only]
+      #   uses: quarto-dev/quarto-actions/setup@v2
+      #   if: github.ref == 'refs/heads/main'
+
+      # - name: Publish to GitHub Pages [Main Branch Only]
+      #   uses: quarto-dev/quarto-actions/publish@v2
+      #   if: github.ref == 'refs/heads/main'
+      #   with:
+      #     target: gh-pages
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    name: Create Github/Pypi Release
+    needs:
+      - test
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - uses: actions/setup-python@v5.0.0
+        with:
+          python-version: '3.12'
+
+      - name : Build library wheel
+        run : pip wheel --no-deps -w dist .
+
+      - name: Publish to Github Releases
+        uses: softprops/action-gh-release@v1
+
+      - name: Publish to Pypi
+        run: |
+          pip install twine
+          twine upload ./dist/* --verbose
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./dist/*.whl
