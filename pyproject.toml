@@ -7,7 +7,7 @@ where = ["src"]
 
 [project]
 name = "mosaiq"
-version="0.1.7"
+version="0.1.8"
 dynamic = ["version"]
 authors = [
     { name = "Justin Donaldson", email = "jjd@jjd.io" }
@@ -36,7 +36,7 @@ ci = [
 ]
 
 [tool.bumpversion]
-current_version = "0.1.7"
+current_version = "0.1.8"
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"
