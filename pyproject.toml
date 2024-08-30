@@ -25,6 +25,10 @@ dev = [
   "bump-my-version"
 ]
 
+ci = [
+  "pytest-cov"
+]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
