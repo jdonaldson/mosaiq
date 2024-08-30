@@ -8,7 +8,6 @@ where = ["src"]
 [project]
 name = "mosaiq"
 version="0.1.10"
-tag = false
 
 dynamic = ["version"]
 authors = [
