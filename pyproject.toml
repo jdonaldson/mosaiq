@@ -9,7 +9,6 @@ where = ["src"]
 name = "mosaiq"
 version="0.1.10"
 
-dynamic = ["version"]
 authors = [
     { name = "Justin Donaldson", email = "jjd@jjd.io" }
 ]
