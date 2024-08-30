@@ -7,7 +7,7 @@ where = ["src"]
 
 [project]
 name = "mosaiq"
-version="0.1.10"
+version="0.1.11"
 
 authors = [
     { name = "Justin Donaldson", email = "jjd@jjd.io" }
@@ -36,7 +36,7 @@ ci = [
 ]
 
 [tool.bumpversion]
-current_version = "0.1.10"
+current_version = "0.1.11"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"
