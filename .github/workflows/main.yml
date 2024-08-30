@@ -29,7 +29,6 @@ jobs:
 
       - name : Install Requirements
         run : |
-          pip install -r requirements.txt
           pip install ".[ci]"
 
       - name: Run Tests
