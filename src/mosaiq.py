@@ -12,7 +12,7 @@ def top_cat(dat, col, top=7):
     topmod = dat[col].map(lambda label: "NA_TOPN" if label not in top_labels else label)
     return topmod
 
-def top_bin(dat,col,topn=7):
+def top_bin(dat, col, topn=7):
     if dat[col].dtype == "object":
         return top_cat(dat, col, topn).reset_index(drop=True)
     _, bins = np.histogram(dat[col][~np.isnan(dat[col])], bins=8)

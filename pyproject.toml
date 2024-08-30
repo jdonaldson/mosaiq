@@ -47,6 +47,11 @@ sign_tags = false
 tag_name = "v{new_version}"
 tag_message = "Bump version: {current_version} → {new_version}"
 allow_dirty = false
-commit = false
+commit = true
 message = "Bump version: {current_version} → {new_version}"
 commit_args = ""
+
+[pytest]
+addopts = "--cov=src"
+pythonpath = "src"
+testpaths = ["tests"]
