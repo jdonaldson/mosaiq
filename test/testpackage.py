@@ -1,4 +1,4 @@
 import mosaiq
-def testpack():
+def test_pack():
     assert mosaiq is not None
 
