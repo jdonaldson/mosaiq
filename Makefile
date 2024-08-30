@@ -39,6 +39,17 @@ dev :
 clean:
 	find . -type d -name "__pycache__" -delete
 
+patch:
+	bump-my-version bump patch
+
+
+minor:
+	bump-my-version bump minor
+
+major:
+	bump-my-version bump major
+
+
 # docs: readme
 # 	quartodoc build
 # 	git-changelog --provider github > changelog.md
