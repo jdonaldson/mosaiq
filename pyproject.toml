@@ -64,14 +64,14 @@ values = ["release", "post"]
 [[tool.bumpversion.files]]
 filename = "src/mosaiq/_version.py"
 
-[[tool.bumpversion.files]]
-filename = "CHANGELOG.md"
-search = "Unreleased"
+# [[tool.bumpversion.files]]
+# filename = "CHANGELOG.md"
+# search = "Unreleased"
 
-[[tool.bumpversion.files]]
-filename = "CHANGELOG.md"
-search = "{current_version}...HEAD"
-replace = "{current_version}...{new_version}"
+# [[tool.bumpversion.files]]
+# filename = "CHANGELOG.md"
+# search = "{current_version}...HEAD"
+# replace = "{current_version}...{new_version}"
 
 # [pytest]
 # addopts = "--cov=src"
