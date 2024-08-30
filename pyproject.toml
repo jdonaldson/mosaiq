@@ -62,7 +62,7 @@ commit_args = ""
 values = ["release", "post"]
 
 [[tool.bumpversion.files]]
-filename = "mosaiq/VERSION"
+filename = "src/mosaiq/_version.py"
 
 [[tool.bumpversion.files]]
 filename = "CHANGELOG.md"
