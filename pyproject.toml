@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 64.0"]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
@@ -35,12 +35,14 @@ ci = [
 ]
 
 [tool.setuptools.dynamic]
-version = {file = "VERSION"}
+version = { attr = "setuptools_scm.get_version" }
+
+[tool.setuptools_scm]
+write_to = "src/mosaiq/_version.py"
 
 
 [tool.bumpversion]
-
-current_version = "0.1.5"
+current_version = "0.1.6"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"
