@@ -62,9 +62,6 @@ commit_args = ""
 values = ["release", "post"]
 
 [[tool.bumpversion.files]]
-filename = "src/mosaiq/_version.py"
-
-[[tool.bumpversion.files]]
 filename = "CHANGELOG.md"
 search = "Unreleased"
 
