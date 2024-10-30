@@ -8,7 +8,7 @@ import narwhals as nw
 def _pandas(df):
     return df.to_pandas()
 
-def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category20"):
+def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category20", top_na_label="TOP_NA"):
     """
     Create a mosaic plot using Altair, automatically handling numeric fields
     and consolidating low-frequency categories into a "TOP_NA" category.
@@ -35,7 +35,7 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="categ
         elif series.nunique() > num_bins:
             # Handle categorical data by keeping only the top categories
             top_categories = series.value_counts().nlargest(num_bins - 1).index
-            series = series.where(series.isin(top_categories), "TOP_NA")
+            series = series.where(series.isin(top_categories), top_na_label)
         return series
 
     # Process field1
