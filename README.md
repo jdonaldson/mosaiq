@@ -46,6 +46,14 @@ mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category2
 
 ### Example Usage
 
+
+```python
+from vega_datasets import data
+mosaiq(data.seattle_weather(), "weather", "wind").configure_view(continuousWidth=900)
+```
+
+![Seattle Weather](img/seattle_weather.png)
+
 ```python
 import pandas as pd
 import narwhals as nw
@@ -62,6 +70,8 @@ df = pd.DataFrame(data)
 chart = mosaiq(df, "Category", "Value", max_bins=5, color="blueorange")
 chart.display()
 ```
+
+![Color Argument Example](img/color_example.png)
 
 ## Customization
 
