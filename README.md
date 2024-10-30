@@ -1,44 +1,80 @@
-# Mosaiq for Python
+# Mosaiq
 
-This is a simplified [mosaic plot](https://en.wikipedia.org/wiki/Mosaic_plot)
-technique that works for numeric/categorical data.
+`Mosaiq` is a Python function that generates a mosaic plot using Altair, supporting both categorical and numeric fields. This versatile visualization tool automatically bins numeric data and consolidates low-frequency categories into a single "TOP_NA" group. The plot is designed to provide a clear overview of the distribution and relationship between two fields, with customizable color schemes.
 
-![Imgur](https://i.imgur.com/atssMvU.png)
+## Features
 
-For categorical data, a frequency table of values is calculated.  Only the top 7
-most common categories are preserved.  The rest are replaced by "NA_TOPN".
+- **Automatic Binning for Numeric Data**: Uses histogram binning for numeric fields based on a specified maximum number of bins.
+- **Top-N Categories for Categorical Data**: Keeps only the most frequent categories (up to `max_bins`), combining all others into a "TOP_NA" bin.
+- **Customizable Color Scheme**: A single `color` parameter controls the color scheme for both fields, allowing a unified look across all bins.
+- **Tooltip Support**: Hovering over bins displays detailed information, including category labels and counts.
 
-For numeric data, a histogram is calculated over the distribution. The precise
-numeric values are replaced by its respective bin.
+## Dependencies
 
-Call it with the following arguments:
+- [Altair](https://altair-viz.github.io/) for visualization.
+- [Pandas](https://pandas.pydata.org/) and [NumPy](https://numpy.org/) for data manipulation.
+- [Narwhals](https://github.com/narwhals/narwhals) for handling specific typing.
 
-1. A dataframe
-2. The name of a "feature" column
-3. The name of a "target" column
-4. Whether the color ramp should be inverted (default : False)
-5. A colormap (default : derived from target column)
-6. The number of categories to preserve in categorical data (default : 7)
+## Installation
 
-```python
-# dat (pandas dataframe)
-# feature (feature name string)
-# target (target name string)
-mosaiq(dat, feature, target)
+Install the required Python packages with:
+
+```bash
+pip install altair pandas numpy narwhals
 ```
 
-Using this visualization makes it easy to iterate through all feature/target
-interactions in a given dataset:
+## Usage
 
+### Function Signature
 
 ```python
-for col in dat.columns:
-    if col == target:
-        continue # skip the plot if the column is the target
-
-    mosaiq(mdat, col, target)
-    plt.show()
-
+mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category20")
 ```
 
+### Parameters
 
+- **dataframe** (`FrameT`): A pandas DataFrame containing the data to be visualized.
+- **field1** (`str`): Name of the first field (categorical or numeric) to display on the x-axis.
+- **field2** (`str`): Name of the second field (categorical or numeric) to display as blocks within the mosaic.
+- **max_bins** (`int`, optional): Maximum number of bins or categories to display. Defaults to `6`.
+- **color** (`str`, optional): Color scheme for all bins. Defaults to `"category20"`.
+
+### Returns
+
+- **altair.Chart**: A compound Altair chart representing the mosaic plot.
+
+### Example Usage
+
+```python
+import pandas as pd
+import narwhals as nw
+from mosaiq import mosaiq
+
+# Create a sample DataFrame
+data = {
+    "Category": ["A", "B", "C", "D", "E", "F", "G", "H"],
+    "Value": [10, 15, 7, 30, 45, 10, 22, 5]
+}
+df = pd.DataFrame(data)
+
+# Generate a mosaic plot
+chart = mosaiq(df, "Category", "Value", max_bins=5, color="blueorange")
+chart.display()
+```
+
+## Customization
+
+- **Adjust Binning**: Control the number of bins for numeric fields with `max_bins`. If more categories than `max_bins` are present, the function groups the least frequent categories into a new "TOP_NA" category.
+- **Color Scheme**: Set a color scheme using any valid Altair color scheme name (e.g., `"blues"`, `"viridis"`, `"category10"`). This single color parameter unifies the plot’s appearance.
+
+## Additional Notes
+
+This function is decorated with `@nw.narwhalify` to handle non-pandas DataFrame input using Narwhals typing. If you’re unfamiliar with Narwhals, check out the [Narwhals GitHub repo](https://github.com/narwhals/narwhals) for further information.
+
+## License
+
+MIT License. See `LICENSE` for more information.
+
+---
+
+Enjoy exploring your data with `Mosaiq`!
