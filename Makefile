@@ -65,7 +65,6 @@ test:
 
 preflight: test, build
 	pip-compile
-	conda env export > environment.yml
 	twine check dist/*
 	# docs
 
