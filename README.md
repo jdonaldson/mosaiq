@@ -1,6 +1,6 @@
 # Mosaiq
 
-`Mosaiq` is a Python function that generates a mosaic plot using Altair, supporting both categorical and numeric fields. This versatile visualization tool automatically bins numeric data and consolidates low-frequency categories into a single "TOP_NA" group. The plot is designed to provide a clear overview of the distribution and relationship between two fields, with customizable color schemes.
+The Mosaiq library introduces `mosaiq` as a Python function that generates a [mosaic](https://en.wikipedia.org/wiki/Mosaic_plot) plot using [Altair](https://altair-viz.github.io/), supporting both categorical and numeric fields. This versatile visualization tool automatically bins numeric data and consolidates low-frequency categories into a single "TOP_NA" group. The plot is designed to provide a clear overview of the distribution and relationship between two fields, with customizable color schemes.
 
 ## Features
 
