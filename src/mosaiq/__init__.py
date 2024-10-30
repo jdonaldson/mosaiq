@@ -2,12 +2,13 @@ import altair as alt
 import pandas as pd
 import numpy as np
 from narwhals.typing import FrameT
+import narwhals as nw
 
 @nw.narwhalify
 def _pandas(df):
     return df.to_pandas()
 
-def mosaiq(dataframe:FrameT, field1:str, field2:str):
+def mosaiq(dataframe:FrameT, field1:str, field2:str, max_bins = 6):
     """
     Create a mosaic plot using Altair, automatically handling numeric fields.
 
@@ -32,14 +33,14 @@ def mosaiq(dataframe:FrameT, field1:str, field2:str):
 
     # Process field1
     if pd.api.types.is_numeric_dtype(df[field1]):
-        df[f"{field1}_binned"] = create_bins(df[field1])
+        df[f"{field1}_binned"] = create_bins(df[field1], max_bins)
         field1_name = f"{field1}_binned"
     else:
         field1_name = field1
 
     # Process field2
     if pd.api.types.is_numeric_dtype(df[field2]):
-        df[f"{field2}_binned"] = create_bins(df[field2])
+        df[f"{field2}_binned"] = create_bins(df[field2], max_bins)
         field2_name = f"{field2}_binned"
     else:
         field2_name = field2
