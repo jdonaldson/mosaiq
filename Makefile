@@ -1,4 +1,4 @@
-.PHONY: clean lint dev test preflight, docs, publish_docs, pypi, build, docs
+.PHONY: clean, lint, dev, test, preflight, docs, publish_docs, pypi, build, docs
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -42,7 +42,6 @@ clean:
 patch:
 	bump-my-version bump patch
 
-
 minor:
 	bump-my-version bump minor
 
@@ -61,14 +60,14 @@ major:
 build:
 	python -m build
 
+test:
+	pytest --cov=src test
+
 preflight: test, build
 	pip-compile
 	conda env export > environment.yml
 	twine check dist/*
-	docs
-
-test:
-	pytest --cov=src test
+	# docs
 
 # publish_docs: docs
 # 	quarto publish
