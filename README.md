@@ -38,6 +38,7 @@ mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category2
 - **field2** (`str`): Name of the second field (categorical or numeric) to display as blocks within the mosaic.
 - **max_bins** (`int`, optional): Maximum number of bins or categories to display. Defaults to `6`.
 - **color** (`str`, optional): Color scheme for all bins. Defaults to `"category20"`.
+- **top_na_label** (`str`, optional): Provide a custom label for category bins that do not pass max_bins threshold. 
 
 ### Returns
 
