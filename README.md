@@ -20,7 +20,7 @@
 Install the required Python packages with:
 
 ```bash
-pip install altair pandas numpy narwhals
+pip install mosaiq 
 ```
 
 ## Usage
