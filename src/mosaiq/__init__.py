@@ -8,20 +8,18 @@ import narwhals as nw
 def _pandas(df):
     return df.to_pandas()
 
-def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6,
-           categorical_color="category20", histogram_color="blues"):
+def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category20"):
     """
     Create a mosaic plot using Altair, automatically handling numeric fields
     and consolidating low-frequency categories into a "TOP_NA" category.
-    Allows setting different colors for categorical and numeric bins.
+    Uses a single color scheme for both numeric and categorical bins.
 
     Args:
         dataframe: pandas DataFrame containing the data.
         field1: str, first field (categorical or numeric, shown on x-axis).
         field2: str, second field (categorical or numeric, shown as blocks).
         max_bins: int, maximum number of bins or categories to show.
-        categorical_color: str, color scheme for categorical fields.
-        histogram_color: str, color scheme for numeric (binned) fields.
+        color: str, color scheme to apply to all bins.
 
     Returns:
         altair.Chart: A compound chart containing the mosaic plot.
@@ -47,10 +45,6 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6,
     # Process field2
     df[f"{field2}_binned"] = create_bins(df[field2], max_bins)
     field2_name = f"{field2}_binned" if pd.api.types.is_numeric_dtype(df[field2]) else field2
-
-    # Determine color schemes based on field types
-    color_scheme1 = histogram_color if pd.api.types.is_numeric_dtype(df[field1]) else categorical_color
-    color_scheme2 = histogram_color if pd.api.types.is_numeric_dtype(df[field2]) else categorical_color
 
     base = (
         alt.Chart(df)
@@ -102,8 +96,8 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6,
         x2="nx2",
         y="ny:Q",
         y2="ny2",
-        color=alt.Color(f"{field1_name}:N", legend=None, scale=alt.Scale(scheme=color_scheme1)),
-        opacity=alt.Opacity(f"{field2_name}:O", legend=None, scale=alt.Scale(scheme=color_scheme2)),
+        color=alt.Color(f"{field1_name}:N", legend=None, scale=alt.Scale(scheme=color)),
+        opacity=alt.Opacity(f"{field2_name}:O", legend=None),
         tooltip=[
             alt.Tooltip(field1_name, title=field1),
             alt.Tooltip(field2_name, title=field2),
@@ -127,7 +121,7 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6,
             "min(xc):Q",
             axis=alt.Axis(title=field1, orient="top"),
         ),
-        color=alt.Color(field1_name, legend=None, scale=alt.Scale(scheme=color_scheme1)),
+        color=alt.Color(field1_name, legend=None, scale=alt.Scale(scheme=color)),
         text=field1_name
     )
 
