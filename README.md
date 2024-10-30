@@ -52,7 +52,7 @@ from vega_datasets import data
 mosaiq(data.seattle_weather(), "weather", "wind").configure_view(continuousWidth=900)
 ```
 
-![Seattle Weather](https://raw.githubusercontent.com/jdonaldson/mosaiq-python/refs/heads/master/img/seattle_weather.png)
+![Seattle Weather](https://github.com/jdonaldson/mosaiq-python/blob/master/img/seattle_example.png?raw=true)
 
 ```python
 import pandas as pd
@@ -71,7 +71,7 @@ chart = mosaiq(df, "Category", "Value", max_bins=5, color="blueorange")
 chart.display()
 ```
 
-![Color Argument Example](https://raw.githubusercontent.com/jdonaldson/mosaiq-python/refs/heads/master/img/color_example.png)
+![Color Argument Example](https://github.com/jdonaldson/mosaiq-python/blob/master/img/color_example.png?raw=true)
 
 ## Customization
 
