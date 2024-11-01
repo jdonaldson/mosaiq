@@ -8,11 +8,29 @@ import narwhals as nw
 def _pandas(df):
     return df.to_pandas()
 
+def _create_bins(series, num_bins=6, na_label="NA_TOP"):
+    """
+    Create bins for either numeric or categorical data, keeping only top categories
+    and grouping others into an NA bin.
+    """
+    if pd.api.types.is_numeric_dtype(series):
+        bins = np.histogram_bin_edges(series.dropna(), bins=num_bins)
+        labels = [f"{bins[i]:.1f}-{bins[i+1]:.1f}" for i in range(len(bins)-1)]
+        binned = pd.cut(series, bins=bins, labels=labels, include_lowest=True)
+        return binned
+    else:
+        # For categorical data, keep only top categories
+        value_counts = series.value_counts()
+        top_categories = value_counts.nlargest(num_bins - 1).index
+
+        # Create new categorical with NA_TOP included in categories
+        categories = list(top_categories) + [na_label]
+        return pd.Categorical([val if val in top_categories else na_label for val in series],
+                            categories=categories)
+
 def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category20", na_top_label="NA_TOP"):
     """
-    Create a mosaic plot using Altair, automatically handling numeric fields
-    and consolidating low-frequency categories into a "NA_TOP" category.
-    Uses a single color scheme for both numeric and categorical bins.
+    Create a mosaic plot using Altair, showing only top bins and NA category.
 
     Args:
         dataframe: pandas DataFrame containing the data.
@@ -27,15 +45,15 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="categ
     """
     df = _pandas(dataframe)
 
-
     # Process field1
-    df[f"{field1}_binned"] = _create_bins(df[field1], max_bins)
-    field1_name = f"{field1}_binned" if pd.api.types.is_numeric_dtype(df[field1]) else field1
+    df[f"{field1}_binned"] = _create_bins(df[field1], max_bins, na_top_label)
+    field1_name = f"{field1}_binned"
 
     # Process field2
-    df[f"{field2}_binned"] = _create_bins(df[field2], max_bins)
-    field2_name = f"{field2}_binned" if pd.api.types.is_numeric_dtype(df[field2]) else field2
+    df[f"{field2}_binned"] = _create_bins(df[field2], max_bins, na_top_label)
+    field2_name = f"{field2}_binned"
 
+    # Create base chart with aggregation and stacking
     base = (
         alt.Chart(df)
         .transform_aggregate(
@@ -80,7 +98,7 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="categ
         )
     )
 
-    # Create the rectangles
+    # Create rectangles
     rect = base.mark_rect().encode(
         x=alt.X("nx:Q", axis=None),
         x2="nx2",
@@ -102,10 +120,7 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="categ
         text=f"{field2_name}:N"
     )
 
-    # Create the mosaic plot
-    mosaic = rect + text
-
-    # Add labels for field1
+    # Create field1 labels
     field1_labels = base.mark_text(baseline="middle", align="center", angle=0).encode(
         x=alt.X(
             "min(xc):Q",
@@ -117,21 +132,9 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="categ
 
     # Combine all elements and configure
     return (
-        (field1_labels & mosaic)
+        (field1_labels & (rect + text))
         .resolve_scale(x="shared")
         .configure_view()
         .configure_concat(spacing=10)
         .configure_axis(domain=False, ticks=False, labels=False, grid=False)
     )
-
-def _create_bins(series, num_bins=6, na_label="NA_TOP"):
-    if pd.api.types.is_numeric_dtype(series):
-        bins = np.histogram_bin_edges(series.dropna(), bins=num_bins)
-        labels = [f"{bins[i]:.1f}-{bins[i+1]:.1f}" for i in range(len(bins)-1)]
-        binned = pd.cut(series, bins=bins, labels=labels, include_lowest=True)
-        return binned
-    elif series.nunique() > num_bins:
-        # Handle categorical data by keeping only the top categories
-        top_categories = series.value_counts().nlargest(num_bins - 1).index
-        series = series.where(series.isin(top_categories), na_label)
-    return series
