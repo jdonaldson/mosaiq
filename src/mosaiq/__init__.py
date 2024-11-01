@@ -8,10 +8,10 @@ import narwhals as nw
 def _pandas(df):
     return df.to_pandas()
 
-def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category20", top_na_label="TOP_NA"):
+def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category20", na_top_label="NA_TOP"):
     """
     Create a mosaic plot using Altair, automatically handling numeric fields
-    and consolidating low-frequency categories into a "TOP_NA" category.
+    and consolidating low-frequency categories into a "NA_TOP" category.
     Uses a single color scheme for both numeric and categorical bins.
 
     Args:
@@ -20,30 +20,20 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="categ
         field2: str, second field (categorical or numeric, shown as blocks).
         max_bins: int, maximum number of bins or categories to show.
         color: str, color scheme to apply to all bins.
+        na_top_label: str, label for consolidated NA bin.
 
     Returns:
         altair.Chart: A compound chart containing the mosaic plot.
     """
     df = _pandas(dataframe)
 
-    def create_bins(series, num_bins=6):
-        if pd.api.types.is_numeric_dtype(series):
-            bins = np.histogram_bin_edges(series.dropna(), bins=num_bins)
-            labels = [f"{bins[i]:.1f}-{bins[i+1]:.1f}" for i in range(len(bins)-1)]
-            binned = pd.cut(series, bins=bins, labels=labels, include_lowest=True)
-            return binned
-        elif series.nunique() > num_bins:
-            # Handle categorical data by keeping only the top categories
-            top_categories = series.value_counts().nlargest(num_bins - 1).index
-            series = series.where(series.isin(top_categories), top_na_label)
-        return series
 
     # Process field1
-    df[f"{field1}_binned"] = create_bins(df[field1], max_bins)
+    df[f"{field1}_binned"] = _create_bins(df[field1], max_bins)
     field1_name = f"{field1}_binned" if pd.api.types.is_numeric_dtype(df[field1]) else field1
 
     # Process field2
-    df[f"{field2}_binned"] = create_bins(df[field2], max_bins)
+    df[f"{field2}_binned"] = _create_bins(df[field2], max_bins)
     field2_name = f"{field2}_binned" if pd.api.types.is_numeric_dtype(df[field2]) else field2
 
     base = (
@@ -133,3 +123,15 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="categ
         .configure_concat(spacing=10)
         .configure_axis(domain=False, ticks=False, labels=False, grid=False)
     )
+
+def _create_bins(series, num_bins=6, na_label="NA_TOP"):
+    if pd.api.types.is_numeric_dtype(series):
+        bins = np.histogram_bin_edges(series.dropna(), bins=num_bins)
+        labels = [f"{bins[i]:.1f}-{bins[i+1]:.1f}" for i in range(len(bins)-1)]
+        binned = pd.cut(series, bins=bins, labels=labels, include_lowest=True)
+        return binned
+    elif series.nunique() > num_bins:
+        # Handle categorical data by keeping only the top categories
+        top_categories = series.value_counts().nlargest(num_bins - 1).index
+        series = series.where(series.isin(top_categories), na_top_label)
+    return series
