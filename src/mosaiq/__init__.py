@@ -133,5 +133,5 @@ def _create_bins(series, num_bins=6, na_label="NA_TOP"):
     elif series.nunique() > num_bins:
         # Handle categorical data by keeping only the top categories
         top_categories = series.value_counts().nlargest(num_bins - 1).index
-        series = series.where(series.isin(top_categories), na_top_label)
+        series = series.where(series.isin(top_categories), na_label)
     return series
