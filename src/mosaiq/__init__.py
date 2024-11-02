@@ -28,7 +28,7 @@ def _create_bins(series, num_bins=6, na_label="NA_TOP"):
         return pd.Categorical([val if val in top_categories else na_label for val in series],
                             categories=categories)
 
-def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="category20", na_top_label="NA_TOP"):
+def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=20, color="category20", na_top_label="NA_TOP"):
     """
     Create a mosaic plot using Altair, showing only top bins and NA category.
 
@@ -134,7 +134,5 @@ def mosaiq(dataframe: FrameT, field1: str, field2: str, max_bins=6, color="categ
     return (
         (field1_labels & (rect + text))
         .resolve_scale(x="shared")
-        .configure_view()
-        .configure_concat(spacing=10)
         .configure_axis(domain=False, ticks=False, labels=False, grid=False)
     )
