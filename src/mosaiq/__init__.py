@@ -8,12 +8,16 @@ import narwhals as nw
 def _pandas(df):
     return df.to_pandas()
 
-def _create_bins(series, num_bins=6, na_label="NA_TOP"):
+def _create_bins(series, num_bins=20, na_label="NA_TOP"):
     """
     Create bins for either numeric or categorical data, keeping only top categories
     and grouping others into an NA bin.
     """
     if pd.api.types.is_numeric_dtype(series):
+        bin_width = 3.5 * series.std() / (len(series) ** (1 / 3))
+        scott_bins = int((series.max() - series.min()) / bin_width)
+        if scott_bins < num_bins:
+            num_bins = scott_bins
         bins = np.histogram_bin_edges(series.dropna(), bins=num_bins)
         labels = [f"{bins[i]:.1f}-{bins[i+1]:.1f}" for i in range(len(bins)-1)]
         binned = pd.cut(series, bins=bins, labels=labels, include_lowest=True)
